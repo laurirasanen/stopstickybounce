@@ -18,7 +18,7 @@ public Plugin myinfo =
     name = "stopstickybounce",
     author = "Larry",
     description = "Prevent stickies from bouncing off players",
-    version = "1.0.0",
+    version = "1.0.1",
     url = "https://steamcommunity.com/id/pancakelarry"
 };
 
@@ -41,47 +41,37 @@ public Action CH_PassFilter(ent1, ent2, &bool:result)
 	GetEntityClassname(ent1, ent1name, sizeof(ent1name));
 	GetEntityClassname(ent2, ent2name, sizeof(ent2name));
 
-	// Check if ent1 = sticky && ent2 = player
-	if(StrEqual(ent1name, "tf_projectile_pipe_remote", false))
-	{
-		if(0 < ent2 < MAXPLAYERS)
-		{
-			if(g_bTeamOnly)
-			{
-				int ent1owner = GetEntPropEnt(ent1, Prop_Data, "m_hThrower");
-				if(TF2_GetClientTeam(ent1owner) == TF2_GetClientTeam(ent2))
-				{
-					result = false; 
-					return Plugin_Handled; 
-				}
-			}
-			else
-			{
-				result = false; 
-				return Plugin_Handled; 
-			}
-		}
+	new projectile;
+	new player;
+
+	// Determine which entity is the projectile or player
+	if(StrEqual(ent1name, "tf_projectile_pipe_remote", false)) {
+		projectile = ent1;
+		player = ent2;
+	}
+	else if (StrEqual(ent2name, "tf_projectile_pipe_remote", false)) {
+		player = ent1;
+		projectile = ent2;
+	}
+	else {
+		return Plugin_Continue;
 	}
 
-	// Check if ent2 = sticky && ent1 = player
-	if(StrEqual(ent2name, "tf_projectile_pipe_remote", false))
+	if(0 < player < MAXPLAYERS)
 	{
-		if(0 < ent1 < MAXPLAYERS)
+		if(g_bTeamOnly)
 		{
-			if(g_bTeamOnly)
+			int owner = GetEntPropEnt(projectile, Prop_Data, "m_hThrower");
+			if(TF2_GetClientTeam(owner) == TF2_GetClientTeam(player))
 			{
-				int ent2owner = GetEntPropEnt(ent2, Prop_Data, "m_hThrower");
-				if(TF2_GetClientTeam(ent2owner) == TF2_GetClientTeam(ent1))
-				{
-					result = false; 
-					return Plugin_Handled; 
-				}
+				result = false;
+				return Plugin_Handled;
 			}
-			else
-			{
-				result = false; 
-				return Plugin_Handled; 
-			}
+		}
+		else
+		{
+			result = false;
+			return Plugin_Handled;
 		}
 	}
 
