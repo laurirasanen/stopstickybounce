@@ -18,7 +18,7 @@ public Plugin myinfo =
     name = "stopstickybounce",
     author = "Larry",
     description = "Prevent stickies from bouncing off players",
-    version = "1.0.1",
+    version = "1.0.2",
     url = "https://steamcommunity.com/id/pancakelarry"
 };
 
@@ -57,11 +57,13 @@ public Action CH_PassFilter(ent1, ent2, &bool:result)
 		return Plugin_Continue;
 	}
 
-	if(0 < player < MAXPLAYERS)
+	if(1 < player < MaxClients)
 	{
 		if(g_bTeamOnly)
 		{
 			int owner = GetEntPropEnt(projectile, Prop_Data, "m_hThrower");
+			if(!(1 < owner < MaxClients))
+				return Plugin_Handled;
 			if(TF2_GetClientTeam(owner) == TF2_GetClientTeam(player))
 			{
 				result = false;
