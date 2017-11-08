@@ -57,12 +57,12 @@ public Action CH_PassFilter(ent1, ent2, &bool:result)
 		return Plugin_Continue;
 	}
 
-	if(1 < player < MaxClients)
+	if(1 <= player <= MaxClients)
 	{
 		if(g_bTeamOnly)
 		{
 			int owner = GetEntPropEnt(projectile, Prop_Data, "m_hThrower");
-			if(!(1 < owner < MaxClients))
+			if(!(1 <= owner <= MaxClients))
 				return Plugin_Handled;
 			if(TF2_GetClientTeam(owner) == TF2_GetClientTeam(player))
 			{
