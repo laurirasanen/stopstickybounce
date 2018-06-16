@@ -42,6 +42,10 @@ public Action CH_PassFilter(ent1, ent2, &bool:result) {
 		player = ent1;
 		projectile = ent2;
 	}
+	else if (!(StrContains(ent1name, "obj_") || StrContains(ent2name, "obj_"))){
+		result = false;
+		return Plugin_Handled;
+	}
 	else {
 		return Plugin_Continue;
 	}
