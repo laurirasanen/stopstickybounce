@@ -4,9 +4,6 @@
 #pragma semicolon 1
 
 #include <sourcemod>
-#include <sdktools>
-#include <sdkhooks>
-#include <tf2>
 #include <tf2_stocks>
 #include <collisionhook>
 
